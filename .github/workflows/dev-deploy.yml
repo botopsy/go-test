@@ -44,3 +44,4 @@ jobs:
           git checkout -b update-image-$IMAGE_TAG
           git commit -m "Update deployment" -a
           git push origin update-image-$IMAGE_TAG
+          gh pr create --base main --title "Update deployments" --body "Update deployments to new image - go-test:$IMAGE_TAG"
