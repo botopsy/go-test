@@ -26,7 +26,7 @@ jobs:
       - name: Checkout K8s code
         uses: actions/checkout@v4
         with:
-          repository: ${GITHUB_REPOSITORY}-k8s
+          repository: ${{ github.repository }}-k8s
           token: ${{ secrets.GH_ACTION_TOKEN }}
           
       - name: Change Image tag
