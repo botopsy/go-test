@@ -1,0 +1,8 @@
+site_name: "go-test"
+site_description: "Go test"
+
+nav:
+  - Introduction: index.md
+
+plugins:
+  - techdocs-core

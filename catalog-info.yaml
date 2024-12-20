@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: "go-test"
+  description: "Go test"
+  tags:
+    - microservice
+    - go
+  annotations:
+    github.com/project-slug: botopsy/go-test
+    backstage.io/techdocs-ref: dir:.
+    argocd/app-name: "go-test"
+    backstage.io/kubernetes-id: "go-test"
+  links:
+    - url: https://github.com/botopsy/go-test-k8s
+      title: View K8s repo
+      icon: github
+    - url: https://go-test-dev.127.0.0.1.sslip.io
+      title: Dev Application
+      icon: externalLink
+    - url: https://go-test-qa.127.0.0.1.sslip.io
+      title: QA Application
+      icon: externalLink
+    - url: https://go-test.127.0.0.1.sslip.io
+      title: Prod Application
+      icon: externalLink
+spec:
+  type: service
+  lifecycle: experimental
+  owner: "group:default/infra"

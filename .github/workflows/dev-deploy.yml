@@ -1,0 +1,43 @@
+name: Deploy .Net app to Dev K8s 🚀
+
+on:
+  workflow_run: 
+   workflows: ['Build and Push Docker Image to GHCR']
+   types:
+     - completed
+
+jobs:
+  deploy-app:
+    name: Deploy .Net App on K8s
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+  
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set image tag
+        run: |
+          IMAGE_TAG=${GITHUB_SHA::7}
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+
+      - name: Checkout K8s code
+        uses: actions/checkout@v4
+        with:
+          repository: 'botopsy/go-test'
+          token: 
+          
+      - name: Change Image tag
+        run: |
+          yq -i '.images[0].newTag = ""' overlays/dev/kustomization.yaml
+          cat overlays/dev/kustomization.yaml
+
+      - name: Push Changes
+        run: |
+          git add .
+          git config --local user.email github-actions@github.com
+          git config --local user.name github-actions
+          git commit -m "Update deployment" -a
+          git push
