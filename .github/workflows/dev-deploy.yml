@@ -36,6 +36,8 @@ jobs:
           cat k8s/overlays/dev/kustomization.yaml      
 
       - name: Push Changes
+        env:
+          GH_TOKEN: ${{ secrets.GH_ACTION_TOKEN }}
         run: |
           cd k8s
           git add .
