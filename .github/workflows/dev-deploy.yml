@@ -32,7 +32,7 @@ jobs:
           
       - name: Change Image tag
         run: |
-          yq -i '.images[0].newTag = "$IMAGE_TAG"' k8s/overlays/dev/kustomization.yaml
+          yq -i '.images[0].newTag = "${{ env.IMAGE_TAG }}"' k8s/overlays/dev/kustomization.yaml
           cat k8s/overlays/dev/kustomization.yaml      
 
       - name: Push Changes
