@@ -28,16 +28,27 @@ jobs:
         with:
           repository: ${{ github.repository }}-k8s
           token: ${{ secrets.GH_ACTION_TOKEN }}
+          path: k8s
           
       - name: Change Image tag
         run: |
-          yq -i '.images[0].newTag = "$IMAGE_TAG"' overlays/dev/kustomization.yaml
-          cat overlays/dev/kustomization.yaml
+          yq -i '.images[0].newTag = "$IMAGE_TAG"' k8s/overlays/dev/kustomization.yaml
+          cat k8s/overlays/dev/kustomization.yaml      
 
       - name: Push Changes
         run: |
+          cd k8s
           git add .
           git config --local user.email github-actions@github.com
           git config --local user.name github-actions
+          git checkout -b update-image-dev
           git commit -m "Update deployment" -a
-          git push
+      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GH_ACTION_TOKEN }}
+          commit-message: "Update image to ${{ env.IMAGE_DIGEST }}"
+          branch: update-image
+          title: "Update image to ${{ env.IMAGE_TAG }}"
+          body: "This PR updates the image to ${{ env.IMAGE_TAG }}"
